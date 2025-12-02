@@ -1,7 +1,6 @@
 const std = @import("std");
 const print = std.debug.print;
 
-const EMPTY = 'X';
 pub fn main() !void {
     print("Running day 1...\n", .{});
 
@@ -11,6 +10,7 @@ pub fn main() !void {
 
     const MAX_BYTES: usize = 20_000;
     const file = try std.fs.cwd().readFileAlloc(allocator, "day1.txt", MAX_BYTES);
+    //const file = try std.fs.cwd().readFileAlloc(allocator, "day1example.txt", MAX_BYTES);
 
     defer allocator.free(file);
     const fileSize = file.len;
@@ -21,7 +21,8 @@ pub fn main() !void {
     var rotationIndex: usize = 0;
     var ignoreWhitespace = false;
     var dialIndex: i32 = 50;
-    var cnt: i32 = 0;
+    var part1Cnt: i32 = 0;
+    var part2Cnt: i32 = 0;
     for (file) |ch| {
         if (!std.ascii.isAscii(ch)) {
             unreachable;
@@ -31,9 +32,24 @@ pub fn main() !void {
                 continue;
             }
             ignoreWhitespace = true;
+            var oldDialIndex = dialIndex;
             dialIndex = try rotate(dialIndex, rotation[0..rotationIndex]);
+            //pt2 calc
+            while (true) {
+                if (dialIndex > oldDialIndex) {
+                    oldDialIndex += 1;
+                } else if (dialIndex < oldDialIndex) {
+                    oldDialIndex -= 1;
+                } else {
+                    break;
+                }
+                if (@mod(oldDialIndex, 100) == 0) {
+                    part2Cnt = part2Cnt + 1;
+                }
+            }
+            //pt 1 calc
             if (@mod(dialIndex, 100) == 0) {
-                cnt = cnt + 1;
+                part1Cnt += 1;
             }
             rotation = [_]u8{0} ** 8;
             rotationIndex = 0;
@@ -43,7 +59,7 @@ pub fn main() !void {
             rotationIndex = rotationIndex + 1;
         }
     }
-    print("Answer is {}\n Program exit.", .{cnt});
+    print("Answer for part 1: {}\nAnswer for part 2: {}\n Program exit.", .{ part1Cnt, part2Cnt });
 }
 
 fn rotate(dialIndex: i32, rotation: []u8) !i32 {
