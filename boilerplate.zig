@@ -14,7 +14,7 @@ pub fn main() !void {
     defer allocator.free(file);
     const fileSize = file.len;
     std.debug.print("File Size: {} \n", .{fileSize});
-    if (file == MAX_BYTES) {
+    if (fileSize == MAX_BYTES) {
         unreachable;
     }
     //print("Answer for part 1: {}\nAnswer for part 2: {}\n Program exit.", .{ part1Answer, part2Answer });
