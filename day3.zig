@@ -18,7 +18,6 @@ pub fn main() !void {
     if (fileSize == MAX_BYTES) {
         unreachable;
     }
-    var ignoreWhitespace = false;
 
     var part1Answer: usize = 0;
     var part2Answer: usize = 0;
@@ -28,7 +27,6 @@ pub fn main() !void {
     var answer: [answerSize]u8 = [_]u8{0} ** answerSize;
     for (file) |ch| {
         if (std.ascii.isWhitespace(ch)) {
-            ignoreWhitespace = true;
             const lineSlice = line[0..index];
             //print("processing {s}\n", .{lineSlice});
             const localAnswer1 = answer[0..2];
@@ -43,7 +41,6 @@ pub fn main() !void {
             part2Answer += localAnswerInt2;
             index = 0;
         } else {
-            ignoreWhitespace = false;
             line[index] = ch;
             index += 1;
         }

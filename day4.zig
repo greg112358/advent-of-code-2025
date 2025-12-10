@@ -20,14 +20,12 @@ pub fn main() !void {
     }
     var line: [200]u8 = [_]u8{0} ** 200;
     var lines: [200][]u8 = [_][]u8{&.{}} ** 200;
-    var ignoreWhitespace = false;
     var index: usize = 0;
     var lineNo: usize = 0;
     var part1Answer: usize = undefined;
     var part2Answer: usize = undefined;
     for (file) |ch| {
         if (std.ascii.isWhitespace(ch)) {
-            ignoreWhitespace = true;
             const lineSlice = line[0..index];
             const newLine = try allocator.alloc(u8, index);
             @memcpy(newLine, lineSlice);
@@ -37,7 +35,6 @@ pub fn main() !void {
             lineNo += 1;
             index = 0;
         } else {
-            ignoreWhitespace = false;
             line[index] = ch;
             index += 1;
         }
@@ -130,16 +127,16 @@ fn calculatePart1(grid: [][]u8) !usize {
                     answer += 1;
                     const point: Loc = .{ .x = i, .y = j };
                     try points.append(allocator, point);
-                    print("{c}", .{'x'});
+                    //print("{c}", .{'x'});
                 }
                 {
-                    print("{c}", .{line[j]});
+                    //print("{c}", .{line[j]});
                 }
             } else {
-                print("{c}", .{line[j]});
+                //print("{c}", .{line[j]});
             }
         }
-        print("\n", .{});
+        //print("\n", .{});
     }
     for (points.items) |point| {
         grid[point.x][point.y] = '.';

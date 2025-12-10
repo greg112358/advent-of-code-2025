@@ -28,7 +28,6 @@ pub fn main() !void {
     }
 
     var line: [100]u8 = [_]u8{0} ** 100;
-    var ignoreWhitespace = false;
     var index: usize = 0;
     var ranges: std.ArrayList(Range) = .empty;
     defer ranges.deinit(allocator);
@@ -37,7 +36,6 @@ pub fn main() !void {
 
     for (file) |ch| {
         if (std.ascii.isWhitespace(ch)) {
-            ignoreWhitespace = true;
             const lineSlice = line[0..index];
             //print("{s}\n", .{lineSlice});
             const dashIndex: ?usize = std.ascii.indexOfIgnoreCase(lineSlice, "-");
@@ -54,7 +52,6 @@ pub fn main() !void {
             }
             index = 0;
         } else {
-            ignoreWhitespace = false;
             line[index] = ch;
             index += 1;
         }
